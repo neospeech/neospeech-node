@@ -1,0 +1,23 @@
+# Development files
+examples/
+*.log
+*.tmp
+
+# Test files
+test/
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
