@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: "https://registry.npmjs.org/"
+          registry-url: "https://registry.npmjs.org"
           always-auth: true
 
       - name: Check if version changed
@@ -33,9 +33,20 @@ jobs:
             echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
           fi
 
+      - name: Debug token
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "❌ NODE_AUTH_TOKEN is empty"
+            exit 1
+          else
+            echo "✅ NODE_AUTH_TOKEN is set (length: ${#NODE_AUTH_TOKEN})"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+
       - name: Publish to NPM
         if: steps.version_check.outputs.should_publish == 'true'
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
